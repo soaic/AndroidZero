@@ -1,16 +1,14 @@
 package com.soaic.zero;
 
-import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
-import com.soaic.widget.bannerview.BannerAdapter;
-import com.soaic.widget.bannerview.BannerView;
+import com.soaic.widgetlibrary.bannerview.BannerAdapter;
+import com.soaic.widgetlibrary.bannerview.BannerView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,10 +28,14 @@ public class MainActivity extends AppCompatActivity {
         bannerView = findViewById(R.id.banner_view);
         bannerView.setAdapter(new BannerAdapter() {
             @Override
-            public View getView(int position) {
-                ImageView imageView = new ImageView(MainActivity.this);
-                imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-                //imageView.setImageResource(R.drawable.banner1);
+            public View getView(int position, View convertView) {
+                ImageView imageView;
+                if (convertView == null) {
+                    imageView = new ImageView(MainActivity.this);
+                    imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+                } else {
+                    imageView = (ImageView) convertView;
+                }
                 Glide.with(MainActivity.this).load(list[position]).into(imageView);
                 return imageView;
             }

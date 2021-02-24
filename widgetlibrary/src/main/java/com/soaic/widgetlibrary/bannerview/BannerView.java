@@ -1,4 +1,4 @@
-package com.soaic.widget.bannerview;
+package com.soaic.widgetlibrary.bannerview;
 
 import android.app.Activity;
 import android.content.Context;
@@ -12,6 +12,7 @@ import android.view.Gravity;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import androidx.annotation.NonNull;
 import androidx.viewpager.widget.ViewPager;
 
 import com.soaic.widgetlibrary.R;
@@ -45,6 +46,23 @@ public class BannerView extends RelativeLayout {
     private Drawable mIndicatorBg;
     // 整体宽高比
     private int mWidthProportion, mHeightProportion;
+
+    // 生命周期管理
+    private DefaultActivityLifecycleCallbacks lifeCycleCallbacks = new DefaultActivityLifecycleCallbacks(){
+        @Override
+        public void onActivityResumed(@NonNull Activity activity) {
+            if (!mBannerViewPage.isAutoRoll()) {
+                mBannerViewPage.startRoll();
+            }
+        }
+
+        @Override
+        public void onActivityPaused(@NonNull Activity activity) {
+            if (mBannerViewPage.isAutoRoll()) {
+                mBannerViewPage.stopRoll();
+            }
+        }
+    };
 
     public BannerView(Context context) {
         this(context, null);
@@ -138,6 +156,8 @@ public class BannerView extends RelativeLayout {
                 }
             }
         });
+
+        mActivity.getApplication().registerActivityLifecycleCallbacks(lifeCycleCallbacks);
     }
 
     /**
@@ -210,5 +230,12 @@ public class BannerView extends RelativeLayout {
     private int dp2px(float dp) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
                 getResources().getDisplayMetrics());
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        // View被移除Window解除注册
+        mActivity.getApplication().registerActivityLifecycleCallbacks(lifeCycleCallbacks);
+        super.onDetachedFromWindow();
     }
 }

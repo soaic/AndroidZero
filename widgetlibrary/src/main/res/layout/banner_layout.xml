@@ -4,7 +4,7 @@
     android:layout_height="match_parent">
 
 
-    <com.soaic.widget.bannerview.BannerViewPage
+    <com.soaic.widgetlibrary.bannerview.BannerViewPage
         android:id="@+id/banner_vp"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

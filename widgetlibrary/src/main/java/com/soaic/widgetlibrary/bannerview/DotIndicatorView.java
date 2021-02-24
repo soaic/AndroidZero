@@ -1,4 +1,4 @@
-package com.soaic.widget.bannerview;
+package com.soaic.widgetlibrary.bannerview;
 
 import android.content.Context;
 import android.graphics.Bitmap;

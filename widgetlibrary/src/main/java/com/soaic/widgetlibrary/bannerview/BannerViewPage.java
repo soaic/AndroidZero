@@ -1,4 +1,4 @@
-package com.soaic.widget.bannerview;
+package com.soaic.widgetlibrary.bannerview;
 
 import android.content.Context;
 import android.os.Handler;
@@ -7,7 +7,6 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateInterpolator;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,6 +14,8 @@ import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 自动循环滚动的头部横幅ViewPage
@@ -27,6 +28,9 @@ public class BannerViewPage extends ViewPager {
     private long mScrollTime = 3500;
     private BannerAdapter mAdapter;
     private BannerScroller mScroller;
+    private List<View> convertViews;
+    // 是否在自动滚动
+    private boolean isAutoRoll;
 
 
     public BannerViewPage(@NonNull Context context) {
@@ -50,7 +54,7 @@ public class BannerViewPage extends ViewPager {
     }
 
     private void init() {
-
+        convertViews = new ArrayList<>();
         mHandler = new Handler(new Handler.Callback() {
             @Override
             public boolean handleMessage(@NonNull Message msg) {
@@ -64,9 +68,18 @@ public class BannerViewPage extends ViewPager {
     }
 
     /**
+     * 是否在自动滚动
+     * @return
+     */
+    public boolean isAutoRoll(){
+        return isAutoRoll;
+    }
+
+    /**
      * 开始自动滚动
      */
     public void startRoll() {
+        isAutoRoll = true;
         mHandler.removeMessages(SCROLL_MSG);
         mHandler.sendEmptyMessageDelayed(SCROLL_MSG, mScrollTime);
         Log.d(TAG, "startRoll");
@@ -76,6 +89,7 @@ public class BannerViewPage extends ViewPager {
      * 停止自动滚动
      */
     public void stopRoll() {
+        isAutoRoll = false;
         mHandler.removeMessages(SCROLL_MSG);
         Log.d(TAG, "stopRoll");
     }
@@ -115,7 +129,7 @@ public class BannerViewPage extends ViewPager {
         @NonNull
         @Override
         public Object instantiateItem(@NonNull ViewGroup container, int position) {
-            View contentView = mAdapter.getView(position%mAdapter.getCount());
+            View contentView = mAdapter.getView(position%mAdapter.getCount(), getConvertView());
             container.addView(contentView);
             return contentView;
         }
@@ -123,7 +137,20 @@ public class BannerViewPage extends ViewPager {
         @Override
         public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
             container.removeView((View) object);
+            convertViews.add((View)object);
             object = null;
         }
+    }
+
+    /**
+     * 获取转换View 用于view复用
+     */
+    private View getConvertView() {
+        for (int i = 0; i <convertViews.size(); i++) {
+            if(convertViews.get(i).getParent() == null){
+                return convertViews.get(i);
+            }
+        }
+        return null;
     }
 }
