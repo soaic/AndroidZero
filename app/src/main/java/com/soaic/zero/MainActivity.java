@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.soaic.widgetlibrary.bannerview.BannerAdapter;
@@ -16,14 +17,13 @@ public class MainActivity extends AppCompatActivity {
     private BannerView bannerView;
 
     private String[] list = {
-            "https://www.baidu.com/img/dong_8f1d47bcb77d74a1e029d8cbb3b33854.gif",
-            "https://www.hualigs.cn/image/603600e6b6209.jpg"};
+            "https://dss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2636368620,2367075435&fm=26&gp=0.jpg",
+            "https://dss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=3588533707,3876173106&fm=26&gp=0.jpg"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
         bannerView = findViewById(R.id.banner_view);
         bannerView.setAdapter(new BannerAdapter() {

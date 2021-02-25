@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:orientation="vertical">
 
     <com.soaic.widgetlibrary.bannerview.BannerView
         android:id="@+id/banner_view"
@@ -19,4 +19,11 @@
         app:widthProportion="8"
         app:heightProportion="3"/>
 
+    <com.soaic.widgetlibrary.widget.TrackTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1111111"
+        android:textSize="20sp"
+        android:textColor="#000000"
+        android:visibility="visible"/>
 </LinearLayout>
