@@ -21,4 +21,8 @@
         <attr name="widthProportion" format="integer"/>
         <attr name="heightProportion" format="integer"/>
     </declare-styleable>
+
+    <declare-styleable name="TrackTextView">
+        <attr name="changeColor" format="color"/>
+    </declare-styleable>
 </resources>

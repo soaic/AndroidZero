@@ -25,5 +25,6 @@
         android:text="1111111"
         android:textSize="20sp"
         android:textColor="#000000"
+        app:changeColor="@color/colorAccent"
         android:visibility="visible"/>
 </LinearLayout>

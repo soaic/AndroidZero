@@ -1,6 +1,7 @@
 package com.soaic.widgetlibrary.widget;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -8,8 +9,12 @@ import android.graphics.Rect;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 
+import androidx.annotation.ColorInt;
+import androidx.annotation.ColorRes;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatTextView;
+
+import com.soaic.widgetlibrary.R;
 
 /**
  * 带进度颜色变化的TextView
@@ -19,6 +24,8 @@ public class TrackTextView extends AppCompatTextView {
     private static final String TAG = "TrackTextView";
     private Paint mChangePaint;
     private Paint mOriginPaint;
+    private int mChangeColor;
+    private final Context mContext;
     // 当前进度
     private float mCurrentProgress = 0.3f;
     // 朝向
@@ -39,11 +46,19 @@ public class TrackTextView extends AppCompatTextView {
 
     public TrackTextView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        this.mContext = context;
+        initView(attrs);
         initPaint();
     }
 
+    private void initView(AttributeSet attrs) {
+        TypedArray typedArray = mContext.obtainStyledAttributes(attrs,R.styleable.TrackTextView);
+        mChangeColor = typedArray.getColor(R.styleable.TrackTextView_changeColor, getTextColors().getDefaultColor());
+        typedArray.recycle();
+    }
+
     private void initPaint() {
-        mChangePaint = getPaintByColor(Color.RED);
+        mChangePaint = getPaintByColor(mChangeColor);
         mOriginPaint = getPaintByColor(getTextColors().getDefaultColor());
     }
 
@@ -56,6 +71,10 @@ public class TrackTextView extends AppCompatTextView {
         paint.setColor(color);
         paint.setTextSize(getTextSize());
         return paint;
+    }
+
+    public void setChangeColor(@ColorInt int color) {
+        this.mChangeColor = color;
     }
 
     /**
