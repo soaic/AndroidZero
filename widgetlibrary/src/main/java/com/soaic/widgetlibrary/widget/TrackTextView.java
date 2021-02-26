@@ -27,7 +27,7 @@ public class TrackTextView extends AppCompatTextView {
     private int mChangeColor;
     private final Context mContext;
     // 当前进度
-    private float mCurrentProgress = 0.3f;
+    private float mCurrentProgress = 0f;
     // 朝向
     public Direction mDirection = Direction.LEFT_TO_RIGHT;
     // 朝向枚举
@@ -75,6 +75,7 @@ public class TrackTextView extends AppCompatTextView {
 
     public void setChangeColor(@ColorInt int color) {
         this.mChangeColor = color;
+        mChangePaint = getPaintByColor(mChangeColor);
     }
 
     /**
