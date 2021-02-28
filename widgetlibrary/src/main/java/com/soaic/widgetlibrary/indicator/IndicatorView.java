@@ -18,7 +18,7 @@ import com.soaic.widgetlibrary.R;
 public class IndicatorView extends HorizontalScrollView implements ViewPager.OnPageChangeListener {
 
     private IndicatorAdapter mAdapter;
-    private LinearLayout mIndicatorGroup;
+    private IndicatorGroup mIndicatorGroup;
 
     private int mVisibleNumbers = 0;
     private ViewPager mViewPager;
@@ -35,11 +35,9 @@ public class IndicatorView extends HorizontalScrollView implements ViewPager.OnP
 
     public IndicatorView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-
         initAttribute(context, attrs);
 
-        mIndicatorGroup = new LinearLayout(context);
-        mIndicatorGroup.setOrientation(LinearLayout.HORIZONTAL);
+        mIndicatorGroup = new IndicatorGroup(context);
         addView(mIndicatorGroup);
     }
 
@@ -58,18 +56,18 @@ public class IndicatorView extends HorizontalScrollView implements ViewPager.OnP
         for (int i = 0; i < count; i++) {
             View view = mAdapter.getView(i,this);
             switchClick(view, i);
-            mIndicatorGroup.addView(view);
+            mIndicatorGroup.addItemView(view);
         }
 
         // 默认点亮第一个
-        mAdapter.highIndicator(mIndicatorGroup.getChildAt(0));
+        mAdapter.highIndicator(mIndicatorGroup.getItemChildAt(0));
     }
 
     private void switchClick(View view, final int position) {
         view.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                mViewPager.setCurrentItem(position);
+                mViewPager.setCurrentItem(position, false);
             }
         });
     }
@@ -84,7 +82,7 @@ public class IndicatorView extends HorizontalScrollView implements ViewPager.OnP
     }
 
     public View getItem(int position) {
-        return mIndicatorGroup.getChildAt(position);
+        return mIndicatorGroup.getItemChildAt(position);
     }
 
 
@@ -95,6 +93,8 @@ public class IndicatorView extends HorizontalScrollView implements ViewPager.OnP
         if (changed) {
             adapterItemWidth();
         }
+
+        mIndicatorGroup.setBottomViewWidth(mItemWidth);
     }
 
     /**
@@ -108,7 +108,7 @@ public class IndicatorView extends HorizontalScrollView implements ViewPager.OnP
         } else {
             // 如果没指定
             for (int i = 0; i < mAdapter.getCount(); i++) {
-                int childWidth = mIndicatorGroup.getChildAt(i).getMeasuredWidth();
+                int childWidth = mIndicatorGroup.getItemChildAt(i).getMeasuredWidth();
                 mItemWidth = Math.max(mItemWidth, childWidth);
             }
         }
@@ -120,9 +120,9 @@ public class IndicatorView extends HorizontalScrollView implements ViewPager.OnP
 
         // 给每个item设置宽度
         for (int i = 0; i < mAdapter.getCount(); i++) {
-            ViewGroup.LayoutParams params = mIndicatorGroup.getChildAt(i).getLayoutParams();
+            ViewGroup.LayoutParams params = mIndicatorGroup.getItemChildAt(i).getLayoutParams();
             params.width = mItemWidth;
-            mIndicatorGroup.getChildAt(i).setLayoutParams(params);
+            mIndicatorGroup.getItemChildAt(i).setLayoutParams(params);
         }
     }
 
@@ -139,13 +139,16 @@ public class IndicatorView extends HorizontalScrollView implements ViewPager.OnP
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
         indicatorScrollTo(position, positionOffset);
         mAdapter.onPageScrolled(position, positionOffset, positionOffsetPixels);
+
+        int leftMargin = (int) ((position + positionOffset)*mItemWidth);
+        mIndicatorGroup.setBottomMargin(leftMargin);
     }
 
     @Override
     public void onPageSelected(int position) {
-        mAdapter.restoreIndicator(mIndicatorGroup.getChildAt(mCurrentItem));
+        mAdapter.restoreIndicator(mIndicatorGroup.getItemChildAt(mCurrentItem));
         mCurrentItem = position;
-        mAdapter.highIndicator(mIndicatorGroup.getChildAt(mCurrentItem));
+        mAdapter.highIndicator(mIndicatorGroup.getItemChildAt(mCurrentItem));
     }
 
     @Override
