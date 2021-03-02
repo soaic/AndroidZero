@@ -3,10 +3,10 @@ package com.soaic.widgetlibrary.indicator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
-import android.widget.LinearLayout;
 
 import androidx.viewpager.widget.ViewPager;
 
@@ -18,12 +18,16 @@ import com.soaic.widgetlibrary.R;
 public class IndicatorView extends HorizontalScrollView implements ViewPager.OnPageChangeListener {
 
     private IndicatorAdapter mAdapter;
-    private IndicatorGroup mIndicatorGroup;
+    private final IndicatorGroup mIndicatorGroup;
 
     private int mVisibleNumbers = 0;
     private ViewPager mViewPager;
     private int mItemWidth;
     private int mCurrentItem = 0;
+    // 解决点击抖动问题
+    private boolean mIsExecuteScroll = false;
+    // ViewPage切换页面是否滚动
+    private boolean mSmoothScroll;
 
     public IndicatorView(Context context) {
         this(context, null);
@@ -39,6 +43,7 @@ public class IndicatorView extends HorizontalScrollView implements ViewPager.OnP
 
         mIndicatorGroup = new IndicatorGroup(context);
         addView(mIndicatorGroup);
+
     }
 
     private void initAttribute(Context context, AttributeSet attrs) {
@@ -61,15 +66,7 @@ public class IndicatorView extends HorizontalScrollView implements ViewPager.OnP
 
         // 默认点亮第一个
         mAdapter.highIndicator(mIndicatorGroup.getItemChildAt(0));
-    }
 
-    private void switchClick(View view, final int position) {
-        view.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mViewPager.setCurrentItem(position, false);
-            }
-        });
     }
 
     public void setAdapter(IndicatorAdapter adapter, ViewPager viewPager) {
@@ -79,6 +76,26 @@ public class IndicatorView extends HorizontalScrollView implements ViewPager.OnP
         this.mViewPager = viewPager;
         setAdapter(adapter);
         viewPager.addOnPageChangeListener(this);
+    }
+
+    public void setAdapter(IndicatorAdapter adapter, ViewPager viewPager, boolean smoothScroll) {
+        this.mSmoothScroll = smoothScroll;
+        setAdapter(adapter, viewPager);
+    }
+
+    private void switchClick(View view, final int position) {
+        view.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mViewPager !=null) {
+                    mViewPager.setCurrentItem(position, mSmoothScroll);
+                }
+                // IndicatorItem对应滚动到最中心
+                indicatorSmoothScrollTo(position);
+                // 移动下标
+                mIndicatorGroup.scrollBottomTrack(position);
+            }
+        });
     }
 
     public View getItem(int position) {
@@ -92,9 +109,9 @@ public class IndicatorView extends HorizontalScrollView implements ViewPager.OnP
 
         if (changed) {
             adapterItemWidth();
+            // 添加指示器
+            mIndicatorGroup.addBottomView(mAdapter.getBottomView(), mItemWidth);
         }
-
-        mIndicatorGroup.setBottomViewWidth(mItemWidth);
     }
 
     /**
@@ -135,13 +152,27 @@ public class IndicatorView extends HorizontalScrollView implements ViewPager.OnP
         scrollTo(scrollToOffset, 0);
     }
 
+    /**
+     * 点击移动 带动画
+     */
+    private void indicatorSmoothScrollTo(int position) {
+        // 当前的偏移量
+        int currentOffset =  ((position) * mItemWidth);
+        // 原始的左边的偏移量
+        int originLeftOffset = (getWidth()-mItemWidth)/2;
+        // 当前应该滚动的位置
+        int scrollToOffset = currentOffset - originLeftOffset;
+        // smoothScrollTo
+        smoothScrollTo(scrollToOffset,0);
+    }
+
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        indicatorScrollTo(position, positionOffset);
-        mAdapter.onPageScrolled(position, positionOffset, positionOffsetPixels);
-
-        int leftMargin = (int) ((position + positionOffset)*mItemWidth);
-        mIndicatorGroup.setBottomMargin(leftMargin);
+        if (mIsExecuteScroll) {
+            indicatorScrollTo(position, positionOffset);
+            mAdapter.onPageScrolled(position, positionOffset);
+            mIndicatorGroup.setBottomMargin(position, positionOffset);
+        }
     }
 
     @Override
@@ -153,6 +184,11 @@ public class IndicatorView extends HorizontalScrollView implements ViewPager.OnP
 
     @Override
     public void onPageScrollStateChanged(int state) {
-
+        if(state == 1) {
+            mIsExecuteScroll = true;
+        }
+        if (state == 0) {
+            mIsExecuteScroll = false;
+        }
     }
 }

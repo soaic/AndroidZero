@@ -23,7 +23,7 @@ import java.util.List;
 
 public class IndicatorDemoActivity extends AppCompatActivity {
 
-    private String[] items = {"直播","推荐","视频", "图片","段子","精华部分","同城", "游戏"};
+    private final String[] items = {"直播","推荐","视频", "图片","段子","精华部分","同城", "游戏"};
     private IndicatorView mIndicatorView;
     private ViewPager mViewPager;
     private List<Fragment> fragmentList;
@@ -44,7 +44,7 @@ public class IndicatorDemoActivity extends AppCompatActivity {
 
         mIndicatorView.setAdapter(new IndicatorAdapter() {
             @Override
-            public View getView(int position, ViewGroup parent) {
+            public TrackTextView getView(int position, ViewGroup parent) {
                 TrackTextView trackTextView = new TrackTextView(IndicatorDemoActivity.this);
                 trackTextView.setTextColor(Color.BLACK);
                 trackTextView.setText(items[position]);
@@ -60,32 +60,37 @@ public class IndicatorDemoActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                if (positionOffset > 0) {
-                    // 获取左边
-                    TrackTextView leftTrackTextView = (TrackTextView) mIndicatorView.getItem(position);
-                    leftTrackTextView.setDirection(TrackTextView.Direction.RIGHT_TO_LEFT);
-                    leftTrackTextView.setProgress(1-positionOffset);
-
-                    // 获取右边
-                    TrackTextView rightTrackTextView = (TrackTextView) mIndicatorView.getItem(position+1);
-                    rightTrackTextView.setDirection(TrackTextView.Direction.LEFT_TO_RIGHT);
-                    rightTrackTextView.setProgress(positionOffset);
-                }
+            public void highIndicator(View view) {
+                TrackTextView trackTextView = (TrackTextView) view;
+                trackTextView.setProgress(1f);
             }
 
-            //            @Override
-//            public void highIndicator(View view) {
-//                TrackTextView trackTextView = (TrackTextView) view;
-//                trackTextView.setProgress(1f);
-//            }
-//
-//            @Override
-//            public void restoreIndicator(View view) {
-//                TrackTextView trackTextView = (TrackTextView) view;
-//                trackTextView.setProgress(0f);
-//            }
-        }, mViewPager);
+            @Override
+            public void restoreIndicator(View view) {
+                TrackTextView trackTextView = (TrackTextView) view;
+                trackTextView.setProgress(0f);
+            }
+
+            @Override
+            public View getBottomView() {
+                View view = new View(IndicatorDemoActivity.this);
+                view.setLayoutParams(new ViewGroup.LayoutParams(44, 6));
+                view.setBackgroundColor(Color.RED);
+                return view;
+            }
+
+            @Override
+            public void onPageScrolled(int position, float positionOffset) {
+                TrackTextView currentView = (TrackTextView) mIndicatorView.getItem(position);
+                currentView.setDirection(TrackTextView.Direction.RIGHT_TO_LEFT);
+                currentView.setProgress(1 - positionOffset);
+                if (position < getCount()-1) {
+                    TrackTextView nextView = (TrackTextView) mIndicatorView.getItem(position + 1);
+                    nextView.setDirection(TrackTextView.Direction.LEFT_TO_RIGHT);
+                    nextView.setProgress(positionOffset);
+                }
+            }
+        }, mViewPager, false);
 
         TrackTextView rightTrackTextView = (TrackTextView) mIndicatorView.getItem(0);
         rightTrackTextView.setDirection(TrackTextView.Direction.LEFT_TO_RIGHT);

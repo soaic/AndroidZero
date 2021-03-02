@@ -73,12 +73,7 @@ public class BannerView extends RelativeLayout {
     }
 
     public BannerView(Context context, AttributeSet attrs, int defStyleAttr) {
-        this(context, attrs, defStyleAttr, 0);
-    }
-
-    public BannerView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-
+        super(context, attrs, defStyleAttr);
         mActivity = (Activity) context;
         // 把layout绑定到view中
         inflate(context, R.layout.banner_layout, this);

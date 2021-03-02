@@ -20,7 +20,11 @@ public abstract class IndicatorAdapter {
 
     }
 
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels){
+    public View getBottomView() {
+        return null;
+    }
+
+    public void onPageScrolled(int position, float positionOffset) {
 
     }
 }
