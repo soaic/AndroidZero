@@ -1,6 +1,8 @@
 package com.soaic.zero;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.GridView;
@@ -17,6 +19,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import com.soaic.widgetlibrary.recyclerview.DefaultRefreshCreator;
+import com.soaic.widgetlibrary.recyclerview.RefreshRecyclerView;
 import com.soaic.widgetlibrary.recyclerview.WrapRecyclerView;
 import com.soaic.widgetlibrary.recyclerview.adapter.BaseRecyclerAdapter;
 import com.soaic.widgetlibrary.recyclerview.adapter.OnItemClickListener;
@@ -31,13 +35,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TestFragment extends Fragment {
-    private WrapRecyclerView mRecyclerView;
+    private RefreshRecyclerView mRecyclerView;
     private String mData;
     private List<String> mList = new ArrayList<>();
     private BaseRecyclerAdapter<String> mAdapter;
-
-
-
 
     public TestFragment(){
         super(R.layout.fragment_test);
@@ -76,7 +77,7 @@ public class TestFragment extends Fragment {
                 view.setText(item);
             }
         };
-
+        mRecyclerView.addRefreshViewCreator(new DefaultRefreshCreator());
         mRecyclerView.setAdapter(mAdapter);
 
         // 添加头部
@@ -95,6 +96,20 @@ public class TestFragment extends Fragment {
         TextView text2 = view2.findViewById(R.id.text);
         text2.setText("尾部");
         mRecyclerView.addFooterView(view2);
+
+        mRecyclerView.setOnRefreshListener(new RefreshRecyclerView.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Handler handler = new Handler(new Handler.Callback() {
+                    @Override
+                    public boolean handleMessage(@NonNull Message msg) {
+                        mRecyclerView.onStopRefresh();
+                        return false;
+                    }
+                });
+                handler.sendEmptyMessageDelayed(1, 3000);
+            }
+        });
 
         mAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
