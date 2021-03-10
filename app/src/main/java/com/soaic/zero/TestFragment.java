@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.soaic.widgetlibrary.recyclerview.DefaultRefreshCreator;
 import com.soaic.widgetlibrary.recyclerview.RefreshRecyclerView;
+import com.soaic.widgetlibrary.recyclerview.RefreshV2RecyclerView;
 import com.soaic.widgetlibrary.recyclerview.WrapRecyclerView;
 import com.soaic.widgetlibrary.recyclerview.adapter.BaseRecyclerAdapter;
 import com.soaic.widgetlibrary.recyclerview.adapter.OnItemClickListener;
@@ -35,7 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TestFragment extends Fragment {
-    private RefreshRecyclerView mRecyclerView;
+    private RefreshV2RecyclerView mRecyclerView;
     private String mData;
     private List<String> mList = new ArrayList<>();
     private BaseRecyclerAdapter<String> mAdapter;
@@ -64,11 +65,19 @@ public class TestFragment extends Fragment {
         mList.add(mData+3);
         mList.add(mData+4);
         mList.add(mData+5);
+        mList.add(mData+5);
+        mList.add(mData+5);
+        mList.add(mData+5);
+        mList.add(mData+5);
+        mList.add(mData+5);
+        mList.add(mData+5);
+        mList.add(mData+5);
 
         mRecyclerView = view.findViewById(R.id.recyclerView);
-        mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL));
+//        mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL));
 //        mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(),3));
-        mRecyclerView.addItemDecoration(GridItemDecoration.newBuilder().setDividerHeight(5f).build());
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mRecyclerView.addItemDecoration(LinearItemDecoration.newBuilder().setDividerHeight(5f).build());
         mAdapter = new BaseRecyclerAdapter<String>(getContext(), mList, android.R.layout.simple_list_item_1) {
 
             @Override
@@ -77,7 +86,7 @@ public class TestFragment extends Fragment {
                 view.setText(item);
             }
         };
-        mRecyclerView.addRefreshViewCreator(new DefaultRefreshCreator());
+        mRecyclerView.setRefreshViewCreator(new DefaultRefreshCreator());
         mRecyclerView.setAdapter(mAdapter);
 
         // 添加头部
@@ -97,19 +106,19 @@ public class TestFragment extends Fragment {
         text2.setText("尾部");
         mRecyclerView.addFooterView(view2);
 
-        mRecyclerView.setOnRefreshListener(new RefreshRecyclerView.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                Handler handler = new Handler(new Handler.Callback() {
-                    @Override
-                    public boolean handleMessage(@NonNull Message msg) {
-                        mRecyclerView.onStopRefresh();
-                        return false;
-                    }
-                });
-                handler.sendEmptyMessageDelayed(1, 3000);
-            }
-        });
+//        mRecyclerView.setOnRefreshListener(new RefreshRecyclerView.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                Handler handler = new Handler(new Handler.Callback() {
+//                    @Override
+//                    public boolean handleMessage(@NonNull Message msg) {
+//                        mRecyclerView.onStopRefresh();
+//                        return false;
+//                    }
+//                });
+//                handler.sendEmptyMessageDelayed(1, 3000);
+//            }
+//        });
 
         mAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
