@@ -1,4 +1,4 @@
-package com.soaic.zero.hook;
+package com.soaic.zero.hookstartactivity;
 
 import android.content.ComponentName;
 import android.content.Context;

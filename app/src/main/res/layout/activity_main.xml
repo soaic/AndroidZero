@@ -49,10 +49,12 @@
         android:visibility="gone"/>
 
     <com.soaic.widgetlibrary.widget.LetterSideBar
+        android:id="@+id/letterSideBar"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:paddingTop="10dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:layout_gravity="right"/>
+        android:layout_gravity="right"
+        android:visibility="gone"/>
 </LinearLayout>

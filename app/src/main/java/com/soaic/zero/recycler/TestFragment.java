@@ -1,36 +1,23 @@
-package com.soaic.zero;
+package com.soaic.zero.recycler;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.GridView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.soaic.widgetlibrary.recyclerview.DefaultRefreshCreator;
-import com.soaic.widgetlibrary.recyclerview.RefreshRecyclerView;
 import com.soaic.widgetlibrary.recyclerview.RefreshV2RecyclerView;
-import com.soaic.widgetlibrary.recyclerview.WrapRecyclerView;
 import com.soaic.widgetlibrary.recyclerview.adapter.BaseRecyclerAdapter;
 import com.soaic.widgetlibrary.recyclerview.adapter.OnItemClickListener;
 import com.soaic.widgetlibrary.recyclerview.adapter.ViewHolder;
-import com.soaic.widgetlibrary.recyclerview.adapter.WrapRecyclerAdapter;
-import com.soaic.widgetlibrary.recyclerview.decoration.GridItemDecoration;
 import com.soaic.widgetlibrary.recyclerview.decoration.LinearItemDecoration;
-
-import org.w3c.dom.Text;
+import com.soaic.zero.R;
 
 import java.util.ArrayList;
 import java.util.List;
