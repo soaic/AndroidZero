@@ -2,11 +2,7 @@ package com.soaic.zero.lettersidebar;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
-import com.soaic.widgetlibrary.bannerview.BannerAdapter;
-import com.soaic.widgetlibrary.bannerview.BannerView;
 import com.soaic.widgetlibrary.skin.BaseSkinActivity;
 import com.soaic.zero.R;
 
