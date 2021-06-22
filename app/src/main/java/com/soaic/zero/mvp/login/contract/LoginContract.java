@@ -1,8 +1,8 @@
-package com.soaic.zero.mvp;
+package com.soaic.zero.mvp.login.contract;
 
 import com.soaic.zero.mvp.base.BaseView;
 import com.soaic.zero.mvp.bean.UserInfo;
-import com.soaic.zero.mvp.callback.HttpCallBack;
+import com.soaic.zero.mvp.base.HttpCallBack;
 
 public class LoginContract {
 

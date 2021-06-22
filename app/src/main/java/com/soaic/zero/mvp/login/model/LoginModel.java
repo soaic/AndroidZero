@@ -1,9 +1,11 @@
-package com.soaic.zero.mvp;
+package com.soaic.zero.mvp.login.model;
 
+import com.soaic.zero.mvp.base.BaseModel;
 import com.soaic.zero.mvp.bean.UserInfo;
-import com.soaic.zero.mvp.callback.HttpCallBack;
+import com.soaic.zero.mvp.base.HttpCallBack;
+import com.soaic.zero.mvp.login.contract.LoginContract;
 
-public class LoginModel implements LoginContract.ILoginModel {
+public class LoginModel extends BaseModel implements LoginContract.ILoginModel {
 
     @Override
     public <T> void login(final String username, String Password, final HttpCallBack<T> callBack) {
