@@ -11,6 +11,9 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        multiDexEnabled false
+        multiDexKeepFile file('maindexlist.txt')
     }
 
     buildTypes {
@@ -19,6 +22,17 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    //新增的配置信息
+    dexOptions{
+        javaMaxHeapSize = '4g'
+        preDexLibraries = false
+        additionalParameters = ['--multi-dex', //多dex分包
+                             '--set-max-idx-number=5000', //每个包内方法数上限
+                             '--main-dex-list=' + '/maindexlist.txt', //打包到主classes.dex的文件列表
+                             '--minimal-main-dex']
+    }
+
 
     dataBinding {
         enabled = true
@@ -44,6 +58,6 @@ dependencies {
     implementation "io.reactivex.rxjava3:rxjava:3.0.0"
     implementation "io.reactivex.rxjava3:rxandroid:3.0.0"
 
-
+    implementation 'com.android.support:multidex:1.0.3'
 
 }

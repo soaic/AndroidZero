@@ -1,0 +1,1 @@
+com/soaic/zero/ZeroApplication.class

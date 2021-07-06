@@ -21,11 +21,13 @@
         android:usesCleartextTraffic="true"
         android:requestLegacyExternalStorage="true"
         tools:targetApi="n">
-        <activity android:name=".mvvm.LoginActivity">
+        <activity android:name=".hookstartactivity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".hookstartactivity.TestActivity">
         </activity>
     </application>
 

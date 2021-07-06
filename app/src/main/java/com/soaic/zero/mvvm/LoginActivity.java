@@ -1,5 +1,6 @@
 package com.soaic.zero.mvvm;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -9,9 +10,11 @@ import androidx.databinding.DataBindingUtil;
 
 import com.soaic.zero.R;
 import com.soaic.zero.databinding.LoginMvvmActivityBinding;
+import com.soaic.zero.hookstartactivity.HookStartActivityUtils;
 import com.soaic.zero.mvp.base.HttpCallBack;
 import com.soaic.zero.mvvm.bean.UserInfo;
 import com.soaic.zero.mvvm.model.LoginModel;
+import com.soaic.zero.permission.PermissionActivity;
 
 public class LoginActivity extends AppCompatActivity {
     private LoginMvvmActivityBinding binding;
@@ -42,8 +45,10 @@ public class LoginActivity extends AppCompatActivity {
         binding.userInfoView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mUserInfo.setChecked(!binding.checkBox.isChecked());
+                //mUserInfo.setChecked(!binding.checkBox.isChecked());
                 //mUserInfo.setChecked = !binding.checkBox.isChecked();
+
+               startActivity(new Intent(LoginActivity.this, PermissionActivity.class));
             }
         });
     }

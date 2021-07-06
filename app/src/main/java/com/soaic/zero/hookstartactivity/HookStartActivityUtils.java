@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -95,7 +96,8 @@ public class HookStartActivityUtils {
         }
     }
 
-    // hook
+    // hook 到 startActivity 方法
+    // 把真实
     public void hookStartActivity() throws Exception{
         // 1. 先获取 ActivityTaskManager 中 IActivityTaskManagerSingleton
         Class<?> atmClass = Class.forName("android.app.ActivityTaskManager");
@@ -130,6 +132,7 @@ public class HookStartActivityUtils {
 
         @Override
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+            Log.d("hookstartActivty", "method.getName()="+method.getName());
             if (method.getName().equals("startActivity")) {
                 // 1. 拿到原始的 Intent
                 Intent originIntent = (Intent) args[2];
@@ -140,7 +143,8 @@ public class HookStartActivityUtils {
                 // 4. 替换原始的Intent
                 args[2] = proxyIntent;
             }
-
+            Log.d("hookstartActivty", "method="+method);
+            Log.d("hookstartActivty", "mObject="+mObject);
             return method.invoke(mObject, args);
         }
     }
@@ -192,4 +196,5 @@ public class HookStartActivityUtils {
             return method.invoke(mIpmObj, args);
         }
     }
+
 }
