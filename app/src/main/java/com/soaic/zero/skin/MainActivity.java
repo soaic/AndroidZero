@@ -1,4 +1,4 @@
-package com.soaic.zero.reflect;
+package com.soaic.zero.skin;
 
 import android.content.res.AssetManager;
 import android.content.res.Resources;

@@ -9,6 +9,10 @@ import java.lang.reflect.Field;
 import dalvik.system.BaseDexClassLoader;
 import dalvik.system.DexClassLoader;
 
+/**
+ * 热修复-代码修复
+ * 把dex放到 odex 文件夹下
+ */
 public class FixDexUtils {
 
     public static void fixDex(Context context) {
