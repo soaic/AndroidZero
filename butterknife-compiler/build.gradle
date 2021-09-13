@@ -1,0 +1,21 @@
+plugins {
+    id 'java-library'
+}
+
+dependencies {
+    //需要 implementation 和 annotationProcessor 否则 process 方法不会调用
+    implementation 'com.google.auto.service:auto-service:1.0'
+    annotationProcessor 'com.google.auto.service:auto-service:1.0'
+    implementation 'com.squareup:javapoet:1.13.0'
+    implementation 'com.google.auto:auto-common:1.0'
+    api project(path: ':butterknife-annotations')
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}

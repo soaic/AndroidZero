@@ -21,7 +21,7 @@
         android:usesCleartextTraffic="true"
         android:requestLegacyExternalStorage="true"
         tools:targetApi="n">
-        <activity android:name=".hookstartactivity.MainActivity">
+        <activity android:name=".butterknife.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER" />

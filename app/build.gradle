@@ -37,6 +37,11 @@ android {
     dataBinding {
         enabled = true
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
@@ -45,8 +50,8 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
 
     implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
-    //implementation project(path: ':butterknife-annotations')
-    //implementation project(path: ':butterknife-compiler')
+    implementation project(path: ':butterknife-annotations')
+    annotationProcessor project(path: ':butterknife-compiler')
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
@@ -59,5 +64,7 @@ dependencies {
     implementation "io.reactivex.rxjava3:rxandroid:3.0.0"
 
     implementation 'com.android.support:multidex:1.0.3'
-
+//
+//    implementation 'com.jakewharton:butterknife:10.2.3'
+//    annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.3'
 }
