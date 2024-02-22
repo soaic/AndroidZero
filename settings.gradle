@@ -1,7 +1,3 @@
-include ':ButterKnife'
-include ':butterknife'
-include ':butterknife-annotations'
-include ':butterknife-compiler'
 include ':widgetlibrary'
 include ':app'
 rootProject.name = "AndroidZero"
